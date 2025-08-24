@@ -11,6 +11,7 @@ const processor = unified()
 	.use(remarkGfm)
 	.use(remarkWikiLink, {
 		aliasDivider: "|", // by default, this extension uses [[Link:Display]] instead of [[Link|Display]] like Obsidian does
+		pathFormat: "raw",
 	})
 	.use(remarkFrontmatter, ["yaml"]) // we don't do anything with the YAML frontmatter, but prevents parts of it from being parsed as Markdown titles because of the "---" delimiters
 	.use(remarkStringify);
