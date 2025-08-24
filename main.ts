@@ -136,7 +136,7 @@ class ExportToMarkdownSettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Export folder name")
 			.setDesc(
-				"The name of the folder where exported markdown files will be stored"
+				"The name of the folder where exported markdown files will be written to"
 			)
 			.addText((text) =>
 				text
