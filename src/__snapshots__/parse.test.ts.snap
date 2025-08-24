@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`parse should parse markdown 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "position": {
+            "end": {
+              "column": 17,
+              "line": 1,
+              "offset": 16,
+            },
+            "start": {
+              "column": 3,
+              "line": 1,
+              "offset": 2,
+            },
+          },
+          "type": "text",
+          "value": "Hello, world! ",
+        },
+        {
+          "data": {
+            "alias": "WikiLink Display Text",
+            "exists": false,
+            "hChildren": [
+              {
+                "type": "text",
+                "value": "WikiLink Display Text",
+              },
+            ],
+            "hName": "a",
+            "hProperties": {
+              "className": "internal new",
+              "href": "#/page/wikilink_target",
+            },
+            "permalink": "wikilink_target",
+          },
+          "position": {
+            "end": {
+              "column": 58,
+              "line": 1,
+              "offset": 57,
+            },
+            "start": {
+              "column": 17,
+              "line": 1,
+              "offset": 16,
+            },
+          },
+          "type": "wikiLink",
+          "value": "WikiLink Target",
+        },
+      ],
+      "depth": 1,
+      "position": {
+        "end": {
+          "column": 58,
+          "line": 1,
+          "offset": 57,
+        },
+        "start": {
+          "column": 1,
+          "line": 1,
+          "offset": 0,
+        },
+      },
+      "type": "heading",
+    },
+  ],
+  "position": {
+    "end": {
+      "column": 58,
+      "line": 1,
+      "offset": 57,
+    },
+    "start": {
+      "column": 1,
+      "line": 1,
+      "offset": 0,
+    },
+  },
+  "type": "root",
+}
+`;

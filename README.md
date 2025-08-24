@@ -1,3 +1,20 @@
+# Personal notes
+
+## Hack for supporting WikiLinks
+
+[`@portaljs/remark-wiki-link`](https://github.com/datopian/portaljs/tree/8a4ec39d25d10a859dc7ed3e3a578882a63cc95a/packages/remark-wiki-link) is the only WikiLink plugin for remark that support Obsidian-style WikiLinks ([`remark-wiki-link`](https://github.com/landakram/remark-wiki-link) doesn't support `![[Link]]`-style links for images).
+
+It doesn't support the latest versions of `mdast-util-from-markdown` (used under the hood by unified / remark for parsing markdown). Someone suggested a fix in [this issue](https://github.com/datopian/portaljs/issues/1059).
+
+To "fix" the problem without getting into a state where some package versions are incompatible with each other, I locked all unified / remark-related packages to their previous major versions. 
+
+## Unit testing with Jest
+
+unified (and remark, and others) moved to using ES Modules instead of CommonJS, lost an hour getting Jest to work because of this... https://github.com/nodejs/node/issues/59480
+- other links
+  - https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+  - https://jestjs.io/docs/configuration
+
 # Obsidian Sample Plugin
 
 This is a sample plugin for Obsidian (https://obsidian.md).
