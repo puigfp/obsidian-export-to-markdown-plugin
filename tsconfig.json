@@ -20,5 +20,11 @@
   },
   "include": [
     "**/*.ts"
+  ],
+  "exclude": [
+    "jest.config.ts",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/__snapshots__/**"
   ]
 }
