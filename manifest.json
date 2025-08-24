@@ -3,7 +3,7 @@
 	"name": "Export to Markdown",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
+	"description": "Exports a Markdown file and its attachments to a folder for sharing outside Obsidian",
 	"author": "Obsidian",
 	"authorUrl": "https://github.com/puigfp",
 	"fundingUrl": null,
