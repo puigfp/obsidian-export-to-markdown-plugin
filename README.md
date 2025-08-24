@@ -62,10 +62,8 @@ Unfortunately, Obsidian doesn't expose its internal Markdown parser, so we have 
 The only one I found that supported Obsidian-style WikiLinks was unified remark and the [`@portaljs/remark-wiki-link`](https://github.com/datopian/portaljs/tree/8a4ec39d25d10a859dc7ed3e3a578882a63cc95a/packages/remark-wiki-link) plugin.  
 (the [`remark-wiki-link`](https://github.com/landakram/remark-wiki-link) plugin doesn't support `![[Link]]`-style links for images)
 
-`@portaljs/remark-wiki-link` isn't compatible with the latest versions of `mdast-util-from-markdown` (used under the hood by unified / remark for parsing markdown).
-
-To "fix" the problem without getting into a state where some package versions are incompatible with each other, I locked all unified / remark-related packages to their previous major versions. 
-
+However, `@portaljs/remark-wiki-link` isn't compatible with the latest versions of `mdast-util-from-markdown` (used under the hood by unified / remark for parsing markdown).  
+To "fix" the problem without getting into a state where some package versions are incompatible with each other, I locked all unified / remark-related packages to their previous major versions.  
 Someone suggested a more permanent fix in [this issue](https://github.com/datopian/portaljs/issues/1059).
 
 ## Unit testing with Jest
