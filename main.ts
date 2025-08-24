@@ -1,11 +1,6 @@
 import {
-	App,
 	MarkdownView,
-	Modal,
-	Notice,
 	Plugin,
-	PluginSettingTab,
-	Setting,
 } from "obsidian";
 import { parseMarkdown, stringifyMarkdownTree } from "./src/parse";
 import {
@@ -14,18 +9,11 @@ import {
 	extractLinksFromTree,
 	updateTreeLinks,
 } from "src/transform";
-
-// Remember to rename these classes and interfaces!
-
-interface ExportToMarkdownPlugingSettings {
-	attachmentFolderName: string;
-	exportFolderName: string;
-}
-
-const DEFAULT_SETTINGS: ExportToMarkdownPlugingSettings = {
-	attachmentFolderName: "attachments",
-	exportFolderName: "markdown-export-output",
-};
+import {
+	ExportToMarkdownPlugingSettings,
+	DEFAULT_SETTINGS,
+	ExportToMarkdownSettingTab
+} from "./src/settings";
 
 export default class ExportToMarkdownPlugin extends Plugin {
 	settings: ExportToMarkdownPlugingSettings;
@@ -104,73 +92,4 @@ export default class ExportToMarkdownPlugin extends Plugin {
 	}
 }
 
-class SampleModal extends Modal {
-	constructor(app: App) {
-		super(app);
-	}
 
-	onOpen() {
-		const { contentEl } = this;
-		contentEl.setText("Woah!");
-	}
-
-	onClose() {
-		const { contentEl } = this;
-		contentEl.empty();
-	}
-}
-
-class ExportToMarkdownSettingTab extends PluginSettingTab {
-	plugin: ExportToMarkdownPlugin;
-
-	constructor(app: App, plugin: ExportToMarkdownPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-		const { containerEl } = this;
-
-		containerEl.empty();
-
-		new Setting(containerEl)
-			.setName("Export folder name")
-			.setDesc(
-				"The name of the folder where exported markdown files will be written to"
-			)
-			.addText((text) =>
-				text
-					.setValue(this.plugin.settings.exportFolderName)
-					.onChange(async (value) => {
-						if (value.length === 0) {
-							new Notice(
-								"Export folder name cannot be empty"
-							);
-							return;
-						}
-						this.plugin.settings.exportFolderName = value;
-						await this.plugin.saveSettings();
-					})
-			);
-
-		new Setting(containerEl)
-			.setName("Attachment folder name")
-			.setDesc(
-				"The name of the folder where attachments will be stored alongside the exported markdown file"
-			)
-			.addText((text) =>
-				text
-					.setValue(this.plugin.settings.attachmentFolderName)
-					.onChange(async (value) => {
-						if (value.length === 0) {
-							new Notice(
-								"Attachment folder name cannot be empty"
-							);
-							return;
-						}
-						this.plugin.settings.attachmentFolderName = value;
-						await this.plugin.saveSettings();
-					})
-			);
-	}
-}
