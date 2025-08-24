@@ -1,21 +1,84 @@
-# Personal notes
+# Obsidian Export to Markdown Plugin
 
-## Hack for supporting WikiLinks
+Markdown files stored within Obsidian are surprisingly hard to share with other people when they include images (or other attachments):
+- you need to figure out all the attachments that file references to include them alongside the file
+- you need to change the link format from Obsidian's WikiLink-style format (`![[image]]`) to the standard markdown format (`![](image)`)
 
-[`@portaljs/remark-wiki-link`](https://github.com/datopian/portaljs/tree/8a4ec39d25d10a859dc7ed3e3a578882a63cc95a/packages/remark-wiki-link) is the only WikiLink plugin for remark that support Obsidian-style WikiLinks ([`remark-wiki-link`](https://github.com/landakram/remark-wiki-link) doesn't support `![[Link]]`-style links for images).
+This Obsidian plugin provides a new command that solves both of these problems, allowing you (for instance) to share a Markdown file from you vault through [Github Gist](https://gist.github.com/).
 
-It doesn't support the latest versions of `mdast-util-from-markdown` (used under the hood by unified / remark for parsing markdown). Someone suggested a fix in [this issue](https://github.com/datopian/portaljs/issues/1059).
+![](screenshot.png)
+
+## Installation
+
+I did not submit this plugin to the official list of plugins.
+
+To install it, you need to clone this repository within your Vault's `.obsidian/plugins/` folder and build it locally (see next section).
+
+## Local development
+
+- using the right Node.js version: `nvm use`
+- installing dependencies: `yarn`
+- running unit tests: `yarn run test`
+  - update unit test snapshots: `yarn run test -- -u`
+- build plugin (minified build): `yarn run build`
+- build plugin (development build with auto-rebuild): `yarn run dev`
+  
+  (you then need to reload Obsidian or disable and enable the plugin to load the new version)
+
+## How does it work?
+
+When you run the command, the extension will:
+- parse the Markdown file you want to export to an AST
+- find all links that reference local files
+- copy those local files to the export location
+- update those links' targets in the AST so that they reference the new copied files
+- render the updated AST into Markdown and write that it to the export location
+
+### Caveats
+
+#### Unwanted differences between original file and exported file
+
+Ideally, we would want the exported file to be identical to the original file (with the exception of the updated attachment links).
+
+The main caveat of the above approach (markdown -> AST -> updated AST -> markdown), is that, depending on how the Markdown <-> AST conversions are implemented, it may not be able to provide that.
+
+For instance, in Markdown, there are multiple ways of writing an `h1` title:
+
+```markdown
+# This is an h1 title
+
+This is also an h1 title
+========================
+```
+
+If the AST we are working with only knows that the title is an `h1` title, but not how that `h1` title was formatted in the original file, we have to make an arbitrary choice between those two formats when rendering the AST to Markdown.
+
+Note that the exported file should be semantically equivalent to the original.
+
+#### Cannot use Obsidian's internal parsing library
+
+Unfortunately, Obsidian doesn't expose its internal Markdown parser, so we have to use another one, that may not have the same semantics.
+
+The only one I found that supported Obsidian-style WikiLinks was unified remark and the [`@portaljs/remark-wiki-link`](https://github.com/datopian/portaljs/tree/8a4ec39d25d10a859dc7ed3e3a578882a63cc95a/packages/remark-wiki-link) plugin.  
+(the [`remark-wiki-link`](https://github.com/landakram/remark-wiki-link) plugin doesn't support `![[Link]]`-style links for images)
+
+`@portaljs/remark-wiki-link` isn't compatible with the latest versions of `mdast-util-from-markdown` (used under the hood by unified / remark for parsing markdown).
 
 To "fix" the problem without getting into a state where some package versions are incompatible with each other, I locked all unified / remark-related packages to their previous major versions. 
 
+Someone suggested a more permanent fix in [this issue](https://github.com/datopian/portaljs/issues/1059).
+
 ## Unit testing with Jest
 
-unified (and remark, and others) moved to using ES Modules instead of CommonJS, lost an hour getting Jest to work because of this... https://github.com/nodejs/node/issues/59480
-- other links
-  - https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
-  - https://jestjs.io/docs/configuration
+Lost a bunch of time getting Jest to work because unified (and all the related packages) moved to using ES modules in their releases.
 
-# Obsidian Sample Plugin
+Here are some useful links:
+- why I couldn't use the latest stable Node version: https://github.com/nodejs/node/issues/59480
+- https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+- https://jestjs.io/docs/configuration
+
+---
+# Original `README.md` from [obsidian-sample-plugin](https://github.com/obsidianmd/obsidian-sample-plugin) repository
 
 This is a sample plugin for Obsidian (https://obsidian.md).
 
