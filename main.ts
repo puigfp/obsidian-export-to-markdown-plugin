@@ -1,14 +1,11 @@
 import {
-	MarkdownView,
+	Notice,
 	Plugin,
 } from "obsidian";
-import { parseMarkdown, stringifyMarkdownTree } from "./src/parse";
 import {
-	computeNewLocalPaths,
-	convertLinksToPaths,
-	extractLinksFromTree,
-	updateTreeLinks,
-} from "src/transform";
+	canExportCurrentFile,
+	exportCurrentFileToMarkdown
+} from "./src/export";
 import {
 	ExportToMarkdownPlugingSettings,
 	DEFAULT_SETTINGS,
@@ -25,50 +22,17 @@ export default class ExportToMarkdownPlugin extends Plugin {
 			id: "export-current-file-to-markdown",
 			name: "Export current file",
 			checkCallback: (checking: boolean) => {
-				const markdownView =
-					this.app.workspace.getActiveViewOfType(MarkdownView);
 				if (checking) {
-					return markdownView !== undefined;
+					return canExportCurrentFile(this.app);
 				}
-				const markdownFile = markdownView?.file!;
 
 				(async () => {
-					const content = await this.app.vault.read(markdownFile);
-					const tree = parseMarkdown(content);
-					const links = extractLinksFromTree(tree);
-					const linksToFiles = convertLinksToPaths(
-						markdownFile,
-						links,
-						this.app
-					);
-					const attachmentFolderName =
-						this.settings.attachmentFolderName;
-					const filesToCopy = computeNewLocalPaths(
-						linksToFiles,
-						attachmentFolderName
-					);
-					const updatedTree = updateTreeLinks(tree, filesToCopy);
-					const stringifiedTree = stringifyMarkdownTree(updatedTree);
-					const outputFolder = `${this.settings.exportFolderName}/${markdownFile.basename}`;
-					const outputPath = `${outputFolder}/${markdownFile.name}`;
-					if (!this.app.vault.getAbstractFileByPath(outputFolder)) {
-						await this.app.vault.createFolder(outputFolder);
-					}
-					await this.app.vault.create(outputPath, stringifiedTree);
-					const attachmentsFolder = `${outputFolder}/${attachmentFolderName}`;
-					if (
-						!this.app.vault.getAbstractFileByPath(attachmentsFolder)
-					) {
-						await this.app.vault.createFolder(attachmentsFolder);
-					}
-					for (const fileToCopy of filesToCopy.values()) {
-						const file = this.app.vault.getFileByPath(
-							fileToCopy.localPath
-						)!;
-						await this.app.vault.copy(
-							file,
-							`${outputFolder}/${fileToCopy.exportedLocalPath}`
-						);
+					try {
+						await exportCurrentFileToMarkdown(this.app, this.settings);
+						new Notice("File exported successfully");
+					} catch (error) {
+						new Notice("Failed to export file: ", error);
+						console.error("Failed to export file:", error);
 					}
 				})();
 			},
@@ -80,11 +44,10 @@ export default class ExportToMarkdownPlugin extends Plugin {
 	onunload() {}
 
 	async loadSettings() {
-		this.settings = Object.assign(
-			{},
-			DEFAULT_SETTINGS,
-			await this.loadData()
-		);
+		this.settings = {
+			...DEFAULT_SETTINGS,
+			...(await this.loadData())
+		};
 	}
 
 	async saveSettings() {
