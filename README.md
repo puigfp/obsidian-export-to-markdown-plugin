@@ -59,7 +59,7 @@ Note that the exported file should be semantically equivalent to the original.
 
 Unfortunately, Obsidian doesn't expose its internal Markdown parser, so we have to use another one, that may not have the same semantics.
 
-The only one I found that supported Obsidian-style WikiLinks was unified remark and the [`@portaljs/remark-wiki-link`](https://github.com/datopian/portaljs/tree/8a4ec39d25d10a859dc7ed3e3a578882a63cc95a/packages/remark-wiki-link) plugin.  
+The only one I found that supported Obsidian-style WikiLinks was unified, using remark and the [`@portaljs/remark-wiki-link`](https://github.com/datopian/portaljs/tree/8a4ec39d25d10a859dc7ed3e3a578882a63cc95a/packages/remark-wiki-link) plugin.  
 (the [`remark-wiki-link`](https://github.com/landakram/remark-wiki-link) plugin doesn't support `![[Link]]`-style links for images)
 
 However, `@portaljs/remark-wiki-link` isn't compatible with the latest versions of `mdast-util-from-markdown` (used under the hood by unified / remark for parsing markdown).  
