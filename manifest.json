@@ -4,7 +4,7 @@
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Exports a Markdown file and its attachments to a folder for sharing outside Obsidian",
-	"author": "Obsidian",
+	"author": "puigfp",
 	"authorUrl": "https://github.com/puigfp",
 	"fundingUrl": null,
 	"isDesktopOnly": false
