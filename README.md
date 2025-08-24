@@ -1,6 +1,6 @@
 # Obsidian Export to Markdown Plugin
 
-Markdown files stored within Obsidian are surprisingly hard to share with other people when they include images (or other attachments):
+Markdown files stored within [Obsidian](https://obsidian.md/) are surprisingly hard to share with other people when they include images (or other attachments):
 - you need to figure out all the attachments that file references to include them alongside the file
 - you need to change the link format from Obsidian's WikiLink-style format (`![[image]]`) to the standard markdown format (`![](image)`)
 
